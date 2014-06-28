@@ -45,11 +45,11 @@ public class ThreadPoolDownloadService extends Service {
      */
     @Override
 	public void onCreate() {
-        // TODO - You fill in here to replace null with a new
+        // DONE - You fill in here to replace null with a new
         // FixedThreadPool Executor that's configured to use
         // MAX_THREADS. Use a factory method in the Executors class.
 
-        mExecutor = null;
+        mExecutor = Executors.newFixedThreadPool(MAX_THREADS);
     }
 
     /**
@@ -70,11 +70,16 @@ public class ThreadPoolDownloadService extends Service {
     public static Intent makeIntent(Context context,
                                     Handler handler,
                                     String uri) {
-    	// TODO - You fill in here, by replacing null with an
+    	// DONE - You fill in here, by replacing null with an
         // invocation of the appropriate factory method in
         // DownloadUtils that makes a MessengerIntent.
 
-        return null;
+        return DownloadUtils.makeMessengerIntent(
+        		context,
+        		ThreadPoolDownloadService.class,
+        		handler,
+        		uri
+        		);
     }
 
     /**
@@ -85,7 +90,7 @@ public class ThreadPoolDownloadService extends Service {
 	public int onStartCommand(final Intent intent,
                               int flags,
                               int startId) {
-        // TODO - You fill in here to replace null with a new Runnable
+        // DONE - You fill in here to replace null with a new Runnable
         // that the ThreadPoolExecutor will execute to download the
         // image and respond to the client.  The Runnable's run()
         // method implementation should forward to the appropriate
@@ -93,7 +98,15 @@ public class ThreadPoolDownloadService extends Service {
         // the uri in the intent and returns the file's pathname using
         // a Messenger who's Bundle key is defined by DownloadUtils.MESSENGER_KEY.
 
-        Runnable downloadRunnable = null;
+        Runnable downloadRunnable = new Runnable() {
+        	public void run() {
+        		DownloadUtils.downloadAndRespond(
+        				ThreadPoolDownloadService.this,
+        				intent.getData(),
+        				(Messenger)intent.getExtras().get(DownloadUtils.MESSENGER_KEY)
+        				);
+        	}
+        };
 
         mExecutor.execute(downloadRunnable);
       
