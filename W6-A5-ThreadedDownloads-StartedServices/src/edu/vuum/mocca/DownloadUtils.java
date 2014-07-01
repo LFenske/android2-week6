@@ -36,12 +36,12 @@ public class DownloadUtils {
     /**
      * The key used to store/retrieve a Messenger extra from a Bundle.
      */
-	public static final String MESSENGER_KEY = "MESSENGER";
-	
-	/**
+    public static final String MESSENGER_KEY = "MESSENGER";
+
+    /**
      * The key used to store/retrieve a file's pathname from a Bundle.
      */
-	public static final String PATHNAME_KEY = "PATHNAME";
+    public static final String PATHNAME_KEY = "PATHNAME";
     
     /**
      * If you have access to a stable Internet connection for testing
@@ -56,12 +56,12 @@ public class DownloadUtils {
      * Make an Intent which will start a service if provided as a
      * parameter to startService().
      * 
-     * @param context		The context of the calling component
-     * @param service		The class of the service to be
-     *                          started. (For example, ThreadPoolDownloadService.class) 
-     * @param handler		The handler that the service should
-     *                          use to return a result. 
-     * @param uri		The web URL that the service should download
+     * @param context    The context of the calling component
+     * @param service    The class of the service to be
+     *                   started. (For example, ThreadPoolDownloadService.class) 
+     * @param handler    The handler that the service should
+     *                   use to return a result. 
+     * @param uri        The web URL that the service should download
      * 
      * This method is an example of the Factory Method Pattern,
      * because it creates and returns a different Intent depending on
@@ -83,23 +83,23 @@ public class DownloadUtils {
                                              Class<?> service,
                                              Handler handler,
                                              String uri) {
-    	Messenger messenger = new Messenger(handler);
-    	
-    	Intent intent = new Intent(context,
+        Messenger messenger = new Messenger(handler);
+
+        Intent intent = new Intent(context,
                                    service);
-    	intent.putExtra(MESSENGER_KEY, 
+        intent.putExtra(MESSENGER_KEY, 
                         messenger);
-    	intent.setData(Uri.parse(uri));
-    	
+        intent.setData(Uri.parse(uri));
+
         return intent;
     }
 
     /**
-     *	Use the provided Messenger to send a Message to a Handler in
-     *	another process.
+     * Use the provided Messenger to send a Message to a Handler in
+     * another process.
      *
-     * 	The provided string, outputPath, should be put into a Bundle
-     * 	and included with the sent Message.
+     * The provided string, outputPath, should be put into a Bundle
+     * and included with the sent Message.
      */
     public static void sendPath (String outputPath,
                                  Messenger messenger) {
@@ -126,7 +126,7 @@ public class DownloadUtils {
     public static void downloadAndRespond(Context context,
                                           Uri uri,
                                           Messenger messenger) {
-    	sendPath(DownloadUtils.downloadFile(context,
+        sendPath(DownloadUtils.downloadFile(context,
                                             uri),
                  messenger);
     }
@@ -137,7 +137,7 @@ public class DownloadUtils {
      * project expects. (found in res/drawable-nodpi and Options.java)
      */
     static final int OFFLINE_TEST_IMAGE = R.raw.dougs;
-	
+
     /**
      * The file name that we should use to store the image in offline mode
      */
@@ -148,58 +148,58 @@ public class DownloadUtils {
      * the URL class, store it on the android file system using
      * openFileOutput(), and return the path to the file on disk.
      *
-     * @param context	the context in which to write the file
+     * @param context   the context in which to write the file
      * @param uri       the web url
      * 
      * @return          the path to the downloaded file on the file system
      */
     public static String downloadFile (Context context,
                                        Uri uri) {
-    	
-    	try {
-    	
+
+        try {
+
             // If we're offline, write the image in our resources to
             // disk, then return that pathname.
             if (DOWNLOAD_OFFLINE) {
-	        	
+
                 // Store the image on the file system. We can store it
                 // as private since the test project runs in the same
                 // process as the target project
                 FileOutputStream out =
                     context.openFileOutput(OFFLINE_FILENAME, 0);
-	        	
+
                 // Get a stream from the image resource
                 InputStream in =
                     context.getResources().openRawResource(OFFLINE_TEST_IMAGE);
-	        	
+
                 // Write the resource to disk.
                 copy(in, out);
                 in.close();
                 out.close();
-	        	
+
                 return context.getFilesDir().toString() + File.separator + OFFLINE_FILENAME;
             }
-    	
+
             // Otherwise, go ahead and download the file
             else {
                 // Create a temp file.
                 final File file = getTemporaryFile(context,
                                                    uri.toString());
                 Log.d(TAG, "    downloading to " + file);
-	
+
                 // Download the contents at the URL, which should
                 // reference an image.
                 final InputStream in = (InputStream)
                     new URL(uri.toString()).getContent();
                 final OutputStream os =
                     new FileOutputStream(file);
-	
+
                 // Copy the contents of the downloaded image to the
                 // temp file.
                 copy(in, os);
                 in.close();
                 os.close();
-	
+
                 // Return the pathname of the temp file.
                 return file.getAbsolutePath();
             }
@@ -251,7 +251,7 @@ public class DownloadUtils {
 
         while ((read = in.read(buffer)) != -1) {
             out.write(buffer, 0, read);
-            totalRead += read;			
+            totalRead += read;
         }
 
         return totalRead;

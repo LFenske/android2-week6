@@ -61,16 +61,16 @@ public class DownloadBase extends Activity {
      * the file to make testing easier.
      */
     void displayBitmap (String pathname) {
-    	mCurrentBitmap = BitmapFactory.decodeFile(pathname);
-    	
-    	mImageView.setImageBitmap(mCurrentBitmap);
+        mCurrentBitmap = BitmapFactory.decodeFile(pathname);
+
+        mImageView.setImageBitmap(mCurrentBitmap);
     }
     
     /**
      * Gets the URL from the EditText.
      */
     String getUrlString () {
-    	return mEditText.getText().toString();
+        return mEditText.getText().toString();
     }
     
     /**
@@ -78,8 +78,8 @@ public class DownloadBase extends Activity {
      * reset the image default URL.
      */
     public void resetImage(View view) {
-    	mImageView.setImageBitmap(mDefaultBitmap);
-    	mCurrentBitmap = mDefaultBitmap;
+        mImageView.setImageBitmap(mDefaultBitmap);
+        mCurrentBitmap = mDefaultBitmap;
         mEditText.setText(getResources().getString(R.string.default_url));
         Log.d(TAG, "reset Image");
     }

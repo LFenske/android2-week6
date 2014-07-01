@@ -49,38 +49,38 @@ public class DownloadActivity extends DownloadBase {
      * Please use displayBitmap() defined in DownloadBase
      */
     static class MessengerHandler extends Handler {
-	    
-    	// A weak reference to the enclosing class
-    	WeakReference<DownloadActivity> outerClass;
-    	
-    	/**
-    	 * A constructor that gets a weak reference to the enclosing class.
-    	 * We do this to avoid memory leaks during Java Garbage Collection.
-    	 * 
-    	 * @see https://groups.google.com/forum/#!msg/android-developers/1aPZXZG6kWk/lIYDavGYn5UJ
-    	 */
-    	public MessengerHandler(DownloadActivity outer) {
+
+        // A weak reference to the enclosing class
+        WeakReference<DownloadActivity> outerClass;
+
+        /**
+         * A constructor that gets a weak reference to the enclosing class.
+         * We do this to avoid memory leaks during Java Garbage Collection.
+         * 
+         * @see https://groups.google.com/forum/#!msg/android-developers/1aPZXZG6kWk/lIYDavGYn5UJ
+         */
+        public MessengerHandler(DownloadActivity outer) {
             outerClass = new WeakReference<DownloadActivity>(outer);
-    	}
-    	
-    	// Handle any messages that get sent to this Handler
-    	@Override
-		public void handleMessage(Message msg) {
-    		
+        }
+
+        // Handle any messages that get sent to this Handler
+        @Override
+        public void handleMessage(Message msg) {
+
             // Get an actual reference to the DownloadActivity
             // from the WeakReference.
             final DownloadActivity activity = outerClass.get();
-    		
+
             // If DownloadActivity hasn't been garbage collected
             // (closed by user), display the sent image.
             if (activity != null) {
-                // DONE - You fill in here to display the image
+                // TODO - You fill in here to display the image
                 // bitmap that's been downloaded and returned to
                 // the DownloadActivity as a pathname who's Bundle
-            	// key is defined by DownloadUtils.PATHNAME_KEY
-            	activity.displayBitmap(msg.getData().getString(DownloadUtils.PATHNAME_KEY));
+                // key is defined by DownloadUtils.PATHNAME_KEY
+                activity.displayBitmap(msg.getData().getString(DownloadUtils.PATHNAME_KEY));
             }
-    	}
+        }
     }
 
     /**
@@ -101,40 +101,40 @@ public class DownloadActivity extends DownloadBase {
      * defined in DownloadBase.
      */
     public void runService(View view) {
-    	String which = "";
+        String which = "";
 
-    	switch (view.getId()) {
+        switch (view.getId()) {
         case R.id.intent_service_button:
-            // DONE - You fill in here to start the
+            // TODO - You fill in here to start the
             // DownloadIntentService with the appropriate Intent
             // returned from the makeIntent() factory method.
-        	startService(
-        			DownloadIntentService.makeIntent(
-        					this,
-        					handler,
-        					getUrlString()));
+            startService(
+                    DownloadIntentService.makeIntent(
+                            this,
+                            handler,
+                            getUrlString()));
 
             which = "Starting DownloadIntentService";
             break;
         
         case R.id.thread_pool_button:
-            // DONE - You fill in here to start the
+            // TODO - You fill in here to start the
             // ThreadPoolDownloadService with the appropriate Intent
             // returned from the makeIntent() factory method.
-        	startService(
-        			ThreadPoolDownloadService.makeIntent(
-        					this,
-        					handler,
-        					getUrlString()));
+            startService(
+                    ThreadPoolDownloadService.makeIntent(
+                            this,
+                            handler,
+                            getUrlString()));
 
             which = "Starting ThreadPoolDownloadService";
             break;
         
         }
 
-    	// Display a short pop-up notification telling the user which
-    	// service was started.
-    	Toast.makeText(this,
+        // Display a short pop-up notification telling the user which
+        // service was started.
+        Toast.makeText(this,
                        which,
                        Toast.LENGTH_SHORT).show();
     }
